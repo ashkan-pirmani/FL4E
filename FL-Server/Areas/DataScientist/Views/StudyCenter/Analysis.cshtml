@@ -1,0 +1,113 @@
+﻿@*@model IEnumerable<FL_Server.Models.Models.StudyCenter>
+*@
+
+@model FL_Server.Models.HomeViewModel
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+
+
+
+<div class="card card-custom">
+    <div class="card-header">
+        <div class="card-title">
+            <span class="card-icon">
+                <i class="flaticon2-chat-1 text-primary"></i>
+            </span>
+            <h3 class="card-label">
+        @Model.studyCenterList.FirstOrDefault().StudyCatalogue.Title
+                <small>Lets Break the Silos</small>
+            </h3>
+        </div>
+        @*<div class="card-toolbar">
+            <a asp-action="Create" class="btn btn-sm btn-light-primary font-weight-bold">
+                <i class="flaticon2-cube"></i> Create New Analysis?
+            </a>
+        </div>*@
+    </div>
+    <div class="card-body" data-scroll="true" data-height="200">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        @*@Html.DisplayNameFor(model => model.StudyCatalogue.Title)*@
+                        Analysis Title
+                    </th>
+                    <th>
+                        Analysis Type
+                    </th>
+                    <th>
+                        @* @Html.DisplayNameFor(model => model.ApplicationUser)*@
+                        Users Engaged?
+                    </th>
+                    <th>
+                        Script
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.StudyCenter.LastUpdate)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.studyCenterList)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td>
+                            @if (item.StudyType == true)
+                            {
+                                <a class="btn btn-light-success font-weight-bold">Public</a>
+
+                            }
+                            else
+                            {
+                                <a class="btn btn-light-danger font-weight-bold">Private</a>
+
+                            }
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ApplicationUser.LastName)
+                        </td>
+                        <td>
+                            @if (item.FileModel != null)
+                            {
+                                 <a class="btn btn-light-success font-weight-bold">Script Included</a>
+
+                            }
+                            else
+                            {
+                                <a class="btn btn-light-danger font-weight-bold">Script Not Included</a>
+
+                            }
+
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LastUpdate)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+    <div class="card-footer d-flex justify-content-between">
+        <a asp-area="DataScientist" asp-controller="StudyCatalogue" asp-action="Index" class="btn btn-light-primary font-weight-bold">Back To Study Catalogue?</a>
+        <a href="#" class="btn btn-outline-secondary font-weight-bold text-dark">Learn more</a>
+    </div>
+</div>
+
+
+
+

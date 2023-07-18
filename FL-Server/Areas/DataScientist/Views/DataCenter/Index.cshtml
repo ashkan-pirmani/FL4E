@@ -1,0 +1,971 @@
+﻿@using FL_Server.Models.Models.DataModel
+@model DataUploadViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-success alert-dismissible" style="margin-top:20px">
+        @ViewBag.Message
+    </div>
+}
+@*<form method="post" class="text-white" enctype="multipart/form-data">
+    <input type="file" name="files" multiple required />
+    <input type="text" autocomplete="off" placeholder="Enter File Description" name="description" required />
+    <button class="btn btn-success" type="submit" asp-controller="ScriptCenter" asp-action="UploadToDatabase">Upload to Database</button>
+    </form>
+    <hr />
+*@
+<meta http-equiv="refresh" content="600">
+
+
+<div class="alert alert-custom alert-white alert-shadow fade show gutter-b" role="alert">
+    <div class="row">
+        <div class="alert-icon col-1">
+            <span class="svg-icon svg-icon-primary svg-icon-xl">
+                <!--begin::Svg Icon | path:/metronic/theme/html/demo1/dist/assets/media/svg/icons/Tools/Compass.svg-->
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="height: 3.15rem; width:6.15rem" viewBox="0 0 24 24" version="1.1">
+                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <rect x="0" y="0" width="24" height="24"></rect>
+                        <path d="M7.07744993,12.3040451 C7.72444571,13.0716094 8.54044565,13.6920474 9.46808594,14.1079953 L5,23 L4.5,18 L7.07744993,12.3040451 Z M14.5865511,14.2597864 C15.5319561,13.9019016 16.375416,13.3366121 17.0614026,12.6194459 L19.5,18 L19,23 L14.5865511,14.2597864 Z M12,3.55271368e-14 C12.8284271,3.53749572e-14 13.5,0.671572875 13.5,1.5 L13.5,4 L10.5,4 L10.5,1.5 C10.5,0.671572875 11.1715729,3.56793164e-14 12,3.55271368e-14 Z" fill="#000000" opacity="0.3"></path>
+                        <path d="M12,10 C13.1045695,10 14,9.1045695 14,8 C14,6.8954305 13.1045695,6 12,6 C10.8954305,6 10,6.8954305 10,8 C10,9.1045695 10.8954305,10 12,10 Z M12,13 C9.23857625,13 7,10.7614237 7,8 C7,5.23857625 9.23857625,3 12,3 C14.7614237,3 17,5.23857625 17,8 C17,10.7614237 14.7614237,13 12,13 Z" fill="#000000" fill-rule="nonzero"></path>
+                    </g>
+                </svg>
+                <!--end::Svg Icon-->
+            </span>
+        </div>
+        <div class="alert-text col-11">
+            To Start Data Uploading Process, First a <code>Data Dictionary</code> which is a empty data frame in csv format  needs to be initaited, this <code>Data Dictionary</code> should be attached to the specific <code>Study Catalogue</code>.
+            Then, a  <code>Cleaning Function</code>which is python script helps data quality assesment should be attached to the <code>Data Dictionary</code>.
+            <br />
+            if a <code>Data Dictionary</code> atached to a  <code>Cleaning Function</code> then you can procced with data upload.
+
+            Please Reload The Page If Data Has Not Been Updated.
+        </div>
+    </div>
+</div>
+
+
+<div class="card card-custom">
+    <div class="card-header">
+        <div class="card-title">
+            <span class="card-icon">
+                <i class="flaticon2-chat-1 text-primary"></i>
+            </span>
+            <h3 class="card-label">
+                Data Center
+                <small>#HackTheSilos</small>
+            </h3>
+        </div>
+        <div class="card-toolbar">
+            <a data-bs-toggle="modal" data-bs-target="#kt_modal_new_target" class="btn btn-sm btn-success font-weight-bold">
+
+                Upload Data Dictionary?
+            </a>
+
+            @*<a data-bs-toggle="modal" data-bs-target="#kt_modal_new_target1" class="btn btn-sm btn-success font-weight-bold" style="margin-left: 3px;">Data Cleaning Function?</a>
+
+                <a data-bs-toggle="modal" data-bs-target="#kt_modal_new_target2" class="btn btn-sm btn-success font-weight-bold" style="margin-left: 3px;">Upload Input Data? </a>*@
+        </div>
+    </div>
+    <div class="card-body">
+
+
+
+        @if (Model.DataDictionary.Count == 0)
+        {
+            <caption>No Records Found</caption>
+        }
+        else
+        {
+
+            @foreach (var file in Model.DataDictionary)
+            {
+                @if (file.StudyCatalogueId != null)
+                {
+
+                    <div class="col-xl-12">
+                        <!--begin::Engage Widget 7-->
+            <div class="card card-custom card-stretch gutter-b">
+                            <div class="card-body d-flex p-0">
+                                <div class="flex-grow-1 p-12 card-rounded bgi-no-repeat d-flex flex-column  " style="background-color: #FFF4DE; background-position: right bottom; background-size: auto 100%; background-image: url(/metronic/theme/html/demo1/dist/assets/media/svg/humans/custom-8.svg)">
+
+                                    <div class="d-flex justify-content-between">
+
+                                        <h4 class="text-danger font-weight-bolder m-0">@file.Title</h4>
+                                        <a class="font-weight-bold py-2 px-6" asp-controller="StudyCatalogue" asp-action="Details" asp-route-id="@file.StudyCatalogueId">@Html.DisplayFor(modelItem => file.StudyCatalogue.Title)</a>
+
+                                    </div>
+
+                                    <table class="table ">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Name</th>
+                                                <th scope="col">Upload By?</th>
+                                                <th scope="col">Users Engaged?</th>
+                                                <th scope="col">Status</th>
+                                                <th scope="col">First Upload Time</th>
+                                                <th scope="col">Last Modified Time</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row">@file.Id</th>
+                                                <td>@file.Name</td>
+                                                <td>@file.ApplicationUser.LastName</td>
+                                                <td>
+                                                    @if (file.UsersEngaged == null)
+
+                                                    {
+                                                        <a class="btn btn-light-warning font-weight-bold">Not Users Engaged</a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div>@Model.ApplicationUser.Where(m=>m.Id == @file.UsersEngaged).FirstOrDefault().LastName</div>
+                                                    }
+
+                                                </td>
+
+                                                <td>
+                                                    <span class="label label-inline label-light-primary font-weight-bold">
+                                                        @if (file.Status == true)
+                                                        {
+                                                            <a class="btn btn-light-success font-weight-bold">Public</a>
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <a class="btn btn-light-danger font-weight-bold">Private</a>
+
+                                                        }
+                                                    </span>
+                                                </td>
+                                                <td>@file.IntialUploadTime</td>
+                                                <td>
+
+                                                    @if (file.LastUploadTime == null)
+
+                                                    {
+                                                        <a class="btn btn-light-warning font-weight-bold">Not Modified Yet</a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div>file.LastUploadTime</div>
+                                                    }
+
+
+                                                </td>
+                                                <td>
+                                                    @*                                                    <a asp-action="DataCleanFunctionUpload" asp-route-id="@file.Id">Data Cleaning Function</a> |
+                                                    *@                                                   | <a asp-action="Details" asp-route-id="@file.Id">Details</a> |
+                                                </td>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <p class="text-dark-50 my-5 font-size-xl font-weight-bold">
+                                        @file.Description
+                                    </p>
+                                    <div class="separator separator-dashed separator-border-4"></div>
+                                    <br>
+
+                                    @if (Model.DataCleanFunction.Where(m => m.DataDictionaryOnDatabaseModelId == @file.Id).FirstOrDefault()?.Id == null)
+                                    {
+
+                                        <div class="row">
+                                            <a class="col-10 ">This Data Dictionary Does not have any Cleaning Function </a>
+                                            <a type="button" class="btn btn-light-primary col-2" data-bs-toggle="modal" data-bs-target="#kt_modal_new_target1">Attach now??</a>
+                                        </div>
+                                    }
+
+                                    else
+                                    {
+
+                                        @foreach (var fileclean in Model.DataCleanFunction.Where(m => m.DataDictionaryOnDatabaseModelId == file.Id))
+                                        {
+                                            <div class="d-flex justify-content-between">
+
+                                                <h4 class="text-danger font-weight-bolder m-0">@fileclean.Title</h4>
+
+                                            </div>
+
+                                            <table class="table ">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">#</th>
+                                                        <th scope="col">Name</th>
+                                                        <th scope="col">First Upload Time</th>
+                                                        <th scope="col">Last Modified Time</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <th scope="row">@fileclean.Id</th>
+                                                        <td>@fileclean.Name</td>
+                                                        <td>@fileclean.IntialUploadTime</td>
+                                                        <td>
+
+                                                            @if (fileclean.LastUploadTime == null)
+
+                                                            {
+                                                                <a class="btn btn-light-warning font-weight-bold">Not Modified Yet</a>
+                                                            }
+                                                            else
+                                                            {
+                                                                <div>fileclean.LastUploadTime</div>
+                                                            }
+
+
+                                                        </td>
+                                                        <td>
+                                                            <a asp-action="DownloadDataCleanFunctionFromDatabase" asp-route-id="@fileclean.Id">Download</a>
+                                                            | <a asp-action="DeleteDataCleanFunction" asp-route-id="@fileclean.Id">Delete</a>
+                                                        </td>
+
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+
+                                            <p class="text-dark-50 my-5 font-size-xl font-weight-bold">
+                                                @fileclean.Description
+                                            </p>
+
+                                        }
+                                    }
+
+
+                                    <br>
+
+                                    @if (Model.DataCleanFunction.Where(m => m.DataDictionaryOnDatabaseModelId == @file.Id).FirstOrDefault()?.Id == null)
+                                    {
+                                    }
+                                    else
+                                    {
+
+                                        <div class="separator separator-dashed separator-border-4"></div>
+                                        <br />
+
+                                        @if (Model.DataInputs.Where(m => m.DataDictionaryOnDatabaseModelId == @file.Id).FirstOrDefault()?.Id == null)
+                                        {
+
+                                            <div class="row">
+                                                <a class="col-10 ">No Data Has been Uploaded So far for this data dictionary </a>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <table class="table ">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">#</th>
+                                                        <th scope="col">Title</th>
+                                                        <th scope="col">Name</th>
+                                                        <th scope="col">Uploaded By?</th>
+                                                        <th scope="col">First Upload Time</th>
+                                                        <th scope="col">Last Modified Time</th>
+                                                        <th scope="col">Description</th>
+                                                    </tr>
+                                                </thead>
+                                                @foreach (var fileInput in Model.DataInputs.Where(m => m.DataDictionaryOnDatabaseModelId == file.Id))
+
+                                                {
+
+
+
+
+                                                    <tbody>
+                                                        <tr>
+                                                            <th scope="row">@fileInput.Id</th>
+                                                            <td>@fileInput.Title</td>
+                                                            <td>@fileInput.Name</td>
+                                                            <td>@fileInput.ApplicationUser.LastName</td>
+                                                            <td>@fileInput.IntialUploadTime</td>
+                                                            <td>
+
+                                                                @if (fileInput.LastUploadTime == null)
+
+                                                                {
+                                                                    <a class="btn btn-light-warning font-weight-bold">Not Modified Yet</a>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <div>fileInput.LastUploadTime</div>
+                                                                }
+
+
+                                                            </td>
+                                                            <td>@fileInput.Description</td>
+                                                            <td>
+                                                                <a asp-action="DownloadDataInputFromDatabase" asp-route-id="@fileInput.Id">Download</a>
+                                                                | <a asp-action="DeleteDataInput" asp-route-id="@fileInput.Id">Delete</a>
+                                                            </td>
+
+                                                        </tr>
+                                                    </tbody>
+                                                }
+                                            </table>
+
+
+                                              @if (@file.Status == true )
+                                    {
+
+                                        @foreach (var filedict in Model.DataDictionaryFile.Where(m=>m.DataDictionaryOnDatabaseModelId == file.Id))
+                                        {
+
+
+                                            <div class="col-xl-12">
+                                                <!--begin::Mixed Widget 10-->
+												<div class="card card-custom gutter-b" style="height: 150px">
+                                                    <!--begin::Body-->
+													<div class="card-body d-flex align-items-center justify-content-between flex-wrap">
+                                                        <div class="mr-2">
+                                                            <h3 class="font-weight-bolder">@file.Title</h3>
+                                                            <div class="text-dark-50 font-size-lg mt-2">You Can Download the Latest Core Dataset From here</div>
+                                                        </div>
+                                                                        <a asp-action="DownloadDataDictionaryFromSystem" class="btn btn-primary font-weight-bold py-3 px-6" asp-route-id="@Model.DataDictionaryFile.Where(m=>m.DataDictionaryOnDatabaseModelId == file.Id).FirstOrDefault()?.Id">Download Core Dataset</a>
+
+                                                    </div>
+                                                    <!--end::Body-->
+												</div>
+                                                <!--end::Mixed Widget 10-->
+											</div>
+                                        }
+
+                                    }
+
+                                    else
+                                    {
+                                        <h2 class>This Dataset in Private</h2>
+                                    }
+
+                                        }
+
+
+
+
+                                    }
+
+
+                                  
+                                    <br />
+
+
+                       
+
+
+                                    <br>
+
+
+
+                                    @if (file.Status != false)
+                                    {
+
+                                        <div class="d-flex justify-content-between">
+
+
+                                            @if (Model.DataCleanFunction.Where(m => m.DataDictionaryOnDatabaseModelId == file.Id).FirstOrDefault()?.Id != null)
+                                            {
+                                                <a type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_new_target3">Upload Data?</a>
+                                            }
+                                            <a type="button" class="btn btn-danger" asp-controller="DataCenter" asp-action="DeleteDataDictionary" asp-route-id="@file.Id">Delete</a>
+                                        </div>
+                                    }
+
+
+
+                                </div>
+
+
+                                   
+
+
+
+                            </div>
+                        </div>
+                        <!--end::Engage Widget 7-->
+        </div>
+
+
+
+
+                }
+                <br />
+            }
+
+        }
+
+
+
+
+
+
+    </div>
+    <div class="card-footer d-flex justify-content-between">
+        <a href="#" class="btn btn-light-primary font-weight-bold">Manage</a>
+        <a href="#" class="btn btn-outline-secondary font-weight-bold">Learn more</a>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+<!--begin::Modal - New Target-->
+<div class="modal fade" id="kt_modal_new_target" tabindex="-1" aria-hidden="true">
+    <!--begin::Modal dialog-->
+    <div class="modal-dialog modal-dialog-centered mw-650px">
+        <!--begin::Modal content-->
+        <div class="modal-content rounded">
+            <!--begin::Modal header-->
+            <div class="modal-header pb-0 border-0 justify-content-end">
+                <!--begin::Close-->
+                <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+                    <!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
+                    <span class="svg-icon svg-icon-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="black" />
+                            <rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="black" />
+                        </svg>
+                    </span>
+                    <!--end::Svg Icon-->
+                </div>
+                <!--end::Close-->
+            </div>
+
+
+            <!--begin::Modal header-->
+            <!--begin::Modal body-->
+            <div class="modal-body scroll-y px-10 px-lg-15 pt-0 pb-15">
+                <!--begin:Form-->
+                <form id="kt_modal_new_target_form" method="post" class="form" action="#" enctype="multipart/form-data">
+                    <!--begin::Heading-->
+                    <div class="mb-13 text-center">
+                        <!--begin::Title-->
+                        <h1 class="mb-3">Data Center</h1>
+                        <!--end::Title-->
+                        <!--begin::Description-->
+                        <div class="text-muted fw-bold fs-5">
+                            Please Use this form to Upload your Data Dictionary , if it is related to any Catalogue please include them
+                            <br />
+                            If you need more info, please check
+                            <a href="#" class="fw-bolder link-primary">Guidelines and FAQ</a>.
+                        </div>
+                        <!--end::Description-->
+                    </div>
+                    <!--end::Heading-->
+                    <!--begin::Input group-->
+
+                    <div class="d-flex flex-column mb-8 fv-row">
+                        <!--begin::Label-->
+                        <label class="d-flex align-items-center fs-6 fw-bold mb-2">
+                            <span class="required">Title</span>
+                            <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify a Title for the dataset"></i>
+                        </label>
+                        <!--end::Label-->
+                        <input asp-for="dataDictionary.Title" type="text" class="form-control form-control-solid" autocomplete="off" placeholder="Enter Dataset Title" required />
+                    </div>
+
+                    <div class="d-flex flex-column mb-8 fv-row">
+                        <!--begin::Label-->
+                        <label class="d-flex align-items-center fs-6 fw-bold mb-2">
+                            <span class="required">Description</span>
+                            <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify a target name for future usage and reference"></i>
+                        </label>
+                        <!--end::Label-->
+                        <input asp-for="dataDictionary.Description" type="text" class="form-control form-control-solid" autocomplete="off" placeholder="Enter Dataset Description" required />
+                    </div>
+
+                    <div class="d-flex flex-column mb-8 fv-row">
+                        <div class="form-group">
+                            <label>Status</label>
+                            <div class="radio-inline">
+                                <label class="radio radio-lg">
+                                    <input asp-for="dataDictionary.Status" type="radio" value="True" checked="checked">
+                                    <span></span>Active
+                                </label>
+                                <label class="radio radio-lg">
+                                    <input asp-for="dataDictionary.Status" type="radio" value="False">
+                                    <span></span>Deactive
+                                </label>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column mb-8 fv-row">
+                        <div class="form-group">
+                            <label>Users Engaged?</label>
+                            <div class="form-group">
+                                <select asp-for="dataDictionary.ApplicationUserId" class="form-control form-solid select2 select2-hidden-accessible" id="kt_select2_3" multiple="multiple" data-select2-id="kt_select2_3" tabindex="-1" aria-hidden="true" asp-items="ViewBag.ApplicationUserId">
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <div class="d-flex flex-column mb-8 fv-row">
+                        <!--begin::Label-->
+                        <label class="d-flex align-items-center fs-6 fw-bold mb-2">
+                            <span class="">Attached to any Study Catalogue?</span>
+                            <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="If your attachment is related to Study Catalogue Please choose from here"></i>
+
+                        </label>
+
+                        <!--end::Label-->
+                        <select asp-for="dataDictionary.StudyCatalogueId" class="form-control form-control-solid" asp-items="ViewBag.StudyCatalogueId">
+                            <option label=" "></option>
+                        </select>
+                    </div>
+
+
+
+
+
+
+
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="d-flex flex-stack mb-8">
+                        <!--begin::Label-->
+                        <div class="me-5">
+                            <label class="fs-6 fw-bold">Use the Botton to Share your Data Dictionary</label>
+                            <div class="fs-7 fw-bold text-muted">Lets learn from each other!</div>
+                        </div>
+                        <!--end::Label-->
+                        <!--begin::Switch-->
+                        <label class="form-check form-switch form-check-custom form-check-solid">
+                            <input class="form-control form-control-solid" type="file" multiple required name="files" />
+                            @*									<span class="form-check-label fw-bold text-muted">file</span>
+                            *@
+                        </label>
+
+                        <!--end::Switch-->
+                    </div>
+                    <input type="hidden" asp-for="dataDictionary.Id" />
+                    <!--end::Input group-->
+                    <!--end::Input group-->
+                    <!--begin::Actions-->
+                    <div class="text-center">
+                        <button type="reset" id="kt_modal_new_target_cancel" class="btn btn-light me-3">Cancel</button>
+
+
+                        <button type="submit" id="kt_modal_new_target_submit" asp-controller="DataCenter" asp-action="DataDictionaryUpload" class="btn btn-primary">
+                            <span class="indicator-label">Submit</span>
+                            <span class="indicator-progress">
+                                Please wait...
+                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                            </span>
+                        </button>
+                    </div>
+                    <!--end::Actions-->
+                </form>
+                <!--end:Form-->
+            </div>
+            <!--end::Modal body-->
+        </div>
+        <!--end::Modal content-->
+    </div>
+    <!--end::Modal dialog-->
+</div>
+<!--end::Modal - New Target-->
+<!--begin::Modal - New Target-->
+<div class="modal fade" id="kt_modal_new_target1" tabindex="-1" aria-hidden="true">
+    <!--begin::Modal dialog-->
+    <div class="modal-dialog modal-dialog-centered mw-650px">
+        <!--begin::Modal content-->
+        <div class="modal-content rounded">
+            <!--begin::Modal header-->
+            <div class="modal-header pb-0 border-0 justify-content-end">
+                <!--begin::Close-->
+                <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+                    <!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
+                    <span class="svg-icon svg-icon-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="black" />
+                            <rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="black" />
+                        </svg>
+                    </span>
+                    <!--end::Svg Icon-->
+                </div>
+                <!--end::Close-->
+            </div>
+
+
+            <!--begin::Modal header-->
+            <!--begin::Modal body-->
+            <div class="modal-body scroll-y px-10 px-lg-15 pt-0 pb-15">
+                <!--begin:Form-->
+                <form id="kt_modal_new_target_form" method="post" class="form" action="#" enctype="multipart/form-data">
+                    <!--begin::Heading-->
+                    <div class="mb-13 text-center">
+                        <!--begin::Title-->
+                        <h1 class="mb-3">Data Cleaning Function</h1>
+                        <!--end::Title-->
+                        <!--begin::Description-->
+                        <div class="text-muted fw-bold fs-5">
+                            Please Use this form to Upload your Data Cleaning Function , and relate them to the Dictionary
+                            <br />
+                            If you need more info, please check
+                            <a href="#" class="fw-bolder link-primary">Guidelines and FAQ</a>.
+                        </div>
+                        <!--end::Description-->
+                    </div>
+                    <!--end::Heading-->
+                    <!--begin::Input group-->
+
+                    <div class="d-flex flex-column mb-8 fv-row">
+                        <!--begin::Label-->
+                        <label class="d-flex align-items-center fs-6 fw-bold mb-2">
+                            <span class="required">Title</span>
+                            <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify a Title for the dataset"></i>
+                        </label>
+                        <!--end::Label-->
+                        <input asp-for="dataCleanFunction.Title" type="text" class="form-control form-control-solid" autocomplete="off" placeholder="Enter Dataset Title" required />
+                    </div>
+
+                    <div class="d-flex flex-column mb-8 fv-row">
+                        <!--begin::Label-->
+                        <label class="d-flex align-items-center fs-6 fw-bold mb-2">
+                            <span class="required">Description</span>
+                            <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify a target name for future usage and reference"></i>
+                        </label>
+                        <!--end::Label-->
+                        <input asp-for="dataCleanFunction.Description" type="text" class="form-control form-control-solid" autocomplete="off" placeholder="Enter Dataset Description" required />
+                    </div>
+
+
+
+                    <div class="d-flex flex-column mb-8 fv-row">
+                        <!--begin::Label-->
+                        <label class="d-flex align-items-center fs-6 fw-bold mb-2">
+                            <span class="">Attached to any Data Dictionary?</span>
+                            <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="If your attachment is related to Data Dictionary Please choose from here"></i>
+
+                        </label>
+
+                        <!--end::Label-->
+                        <select asp-for="dataCleanFunction.DataDictionaryOnDatabaseModelId" class="form-control form-control-solid" asp-items="ViewBag.DataDictionaryId" required>
+                            <option label=" "></option>
+                        </select>
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="d-flex flex-stack mb-8">
+                        <!--begin::Label-->
+                        <div class="me-5">
+                            <label class="fs-6 fw-bold">Use the Botton to Share your Cleaning Function</label>
+                            <div class="fs-7 fw-bold text-muted">Lets learn from each other!</div>
+                        </div>
+                        <!--end::Label-->
+                        <!--begin::Switch-->
+                        <label class="form-check form-switch form-check-custom form-check-solid">
+                            <input class="form-control form-control-solid" type="file" multiple required name="files" />
+                            @*									<span class="form-check-label fw-bold text-muted">file</span>
+                            *@
+                        </label>
+
+                        <!--end::Switch-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--end::Input group-->
+                    <!--begin::Actions-->
+                    <div class="text-center">
+                        <button type="reset" id="kt_modal_new_target_cancel" class="btn btn-light me-3">Cancel</button>
+
+
+                        <button type="submit" id="kt_modal_new_target_submit" asp-controller="DataCenter" asp-action="DataCleanFunctionUpload" class="btn btn-primary">
+                            <span class="indicator-label">Submit</span>
+                            <span class="indicator-progress">
+                                Please wait...
+                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                            </span>
+                        </button>
+                    </div>
+                    <!--end::Actions-->
+                </form>
+                <!--end:Form-->
+            </div>
+            <!--end::Modal body-->
+        </div>
+        <!--end::Modal content-->
+    </div>
+    <!--end::Modal dialog-->
+</div>
+<!--end::Modal - New Target-->
+<!--begin::Modal - New Target-->
+<div class="modal fade" id="kt_modal_new_target2" tabindex="-1" aria-hidden="true">
+    <!--begin::Modal dialog-->
+    <div class="modal-dialog modal-dialog-centered mw-650px">
+        <!--begin::Modal content-->
+        <div class="modal-content rounded">
+            <!--begin::Modal header-->
+            <div class="modal-header pb-0 border-0 justify-content-end">
+                <!--begin::Close-->
+                <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+                    <!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
+                    <span class="svg-icon svg-icon-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="black" />
+                            <rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="black" />
+                        </svg>
+                    </span>
+                    <!--end::Svg Icon-->
+                </div>
+                <!--end::Close-->
+            </div>
+
+
+            <!--begin::Modal header-->
+            <!--begin::Modal body-->
+            <div class="modal-body scroll-y px-10 px-lg-15 pt-0 pb-15">
+                <!--begin:Form-->
+                <form id="kt_modal_new_target_form" method="post" class="form" action="#" enctype="multipart/form-data">
+                    <!--begin::Heading-->
+                    <div class="mb-13 text-center">
+                        <!--begin::Title-->
+                        <h1 class="mb-3">Data Input</h1>
+                        <!--end::Title-->
+                        <!--begin::Description-->
+                        <div class="text-muted fw-bold fs-5">
+                            Please Use this form to Upload your Input Data , choose the dictionary it relates to
+                            <br />
+                            If you need more info, please check
+                            <a href="#" class="fw-bolder link-primary">Guidelines and FAQ</a>.
+                        </div>
+                        <!--end::Description-->
+                    </div>
+                    <!--end::Heading-->
+                    <!--begin::Input group-->
+
+                    <div class="d-flex flex-column mb-8 fv-row">
+                        <!--begin::Label-->
+                        <label class="d-flex align-items-center fs-6 fw-bold mb-2">
+                            <span class="required">Title</span>
+                            <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify a Title for the dataset"></i>
+                        </label>
+                        <!--end::Label-->
+                        <input asp-for="dataInputs.Title" type="text" class="form-control form-control-solid" autocomplete="off" placeholder="Enter Dataset Title" required />
+                    </div>
+
+                    <div class="d-flex flex-column mb-8 fv-row">
+                        <!--begin::Label-->
+                        <label class="d-flex align-items-center fs-6 fw-bold mb-2">
+                            <span class="required">Description</span>
+                            <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify a target name for future usage and reference"></i>
+                        </label>
+                        <!--end::Label-->
+                        <input asp-for="dataInputs.Description" type="text" class="form-control form-control-solid" autocomplete="off" placeholder="Enter Dataset Description" required />
+                    </div>
+
+
+                    <div class="d-flex flex-column mb-8 fv-row">
+                        <!--begin::Label-->
+                        <label class="d-flex align-items-center fs-6 fw-bold mb-2">
+                            <span class="">Attached to any Study Catalogue?</span>
+                            <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="If your attachment is related to Study Catalogue Please choose from here"></i>
+
+                        </label>
+
+                        <!--end::Label-->
+                        <select asp-for="dataInputs.DataDictionaryOnDatabaseModelId" class="form-control form-control-solid" asp-items="ViewBag.DataDictionaryId" required>
+                            <option label=" "></option>
+                        </select>
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="d-flex flex-stack mb-8">
+                        <!--begin::Label-->
+                        <div class="me-5">
+                            <label class="fs-6 fw-bold">Use the Botton to Share your Input Data </label>
+                            <div class="fs-7 fw-bold text-muted">Lets learn from each other!</div>
+                        </div>
+                        <!--end::Label-->
+                        <!--begin::Switch-->
+                        <label class="form-check form-switch form-check-custom form-check-solid">
+                            <input class="form-control form-control-solid" type="file" multiple required name="files" />
+
+                        </label>
+
+                        <!--end::Switch-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--end::Input group-->
+                    <!--begin::Actions-->
+                    <div class="text-center">
+                        <button type="reset" id="kt_modal_new_target_cancel" class="btn btn-light me-3">Cancel</button>
+
+
+                        <button type="submit" id="kt_modal_new_target_submit" asp-controller="DataCenter" asp-action="DataInputUpload" class="btn btn-primary">
+                            <span class="indicator-label">Submit</span>
+                            <span class="indicator-progress">
+                                Please wait...
+                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                            </span>
+                        </button>
+                    </div>
+                    <!--end::Actions-->
+                </form>
+                <!--end:Form-->
+            </div>
+            <!--end::Modal body-->
+        </div>
+        <!--end::Modal content-->
+    </div>
+    <!--end::Modal dialog-->
+</div>
+<!--end::Modal - New Target-->
+<!--begin::Modal - New Target-->
+<div class="modal fade" id="kt_modal_new_target3" tabindex="-1" aria-hidden="true">
+    <!--begin::Modal dialog-->
+    <div class="modal-dialog modal-dialog-centered mw-650px">
+        <!--begin::Modal content-->
+        <div class="modal-content rounded">
+            <!--begin::Modal header-->
+            <div class="modal-header pb-0 border-0 justify-content-end">
+                <!--begin::Close-->
+                <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+                    <!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
+                    <span class="svg-icon svg-icon-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="black" />
+                            <rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="black" />
+                        </svg>
+                    </span>
+                    <!--end::Svg Icon-->
+                </div>
+                <!--end::Close-->
+            </div>
+
+
+            <!--begin::Modal header-->
+            <!--begin::Modal body-->
+            <div class="modal-body scroll-y px-10 px-lg-15 pt-0 pb-15">
+                <!--begin:Form-->
+                <form id="kt_modal_new_target_form" method="post" class="form" action="#" enctype="multipart/form-data">
+                    <!--begin::Heading-->
+                    <div class="mb-13 text-center">
+                        <!--begin::Title-->
+                        <h1 class="mb-3">Data Input</h1>
+                        <!--end::Title-->
+                        <!--begin::Description-->
+                        <div class="text-muted fw-bold fs-5">
+                            Please Use this form to Upload your Input Data , choose the dictionary it relates to
+                            <br />
+                            If you need more info, please check
+                            <a href="#" class="fw-bolder link-primary">Guidelines and FAQ</a>.
+                        </div>
+                        <!--end::Description-->
+                    </div>
+                    <!--end::Heading-->
+                    <!--begin::Input group-->
+
+
+
+                    <div class="d-flex flex-column mb-8 fv-row">
+                        <!--begin::Label-->
+                        <label class="d-flex align-items-center fs-6 fw-bold mb-2">
+                            <span class="required">Title</span>
+                            <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify a Title for the dataset"></i>
+                        </label>
+                        <!--end::Label-->
+                        <input asp-for="dataInputs.Title" type="text" class="form-control form-control-solid" autocomplete="off" placeholder="Enter Dataset Title" required />
+                    </div>
+
+                    <div class="d-flex flex-column mb-8 fv-row">
+                        <!--begin::Label-->
+                        <label class="d-flex align-items-center fs-6 fw-bold mb-2">
+                            <span class="required">Description</span>
+                            <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify a target name for future usage and reference"></i>
+                        </label>
+                        <!--end::Label-->
+                        <input asp-for="dataInputs.Description" type="text" class="form-control form-control-solid" autocomplete="off" placeholder="Enter Dataset Description" required />
+                    </div>
+
+
+                    <div class="d-flex flex-column mb-8 fv-row">
+                        <!--begin::Label-->
+                        <label class="d-flex align-items-center fs-6 fw-bold mb-2">
+                            <span class="">Attached to any Study Catalogue?</span>
+                            <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="If your attachment is related to Study Catalogue Please choose from here"></i>
+
+                        </label>
+
+                        <!--end::Label-->
+                        <select asp-for="dataInputs.DataDictionaryOnDatabaseModelId" class="form-control form-control-solid" asp-items="ViewBag.DataDictionaryId" required>
+                            <option label=" "></option>
+                        </select>
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="d-flex flex-stack mb-8">
+                        <!--begin::Label-->
+                        <div class="me-5">
+                            <label class="fs-6 fw-bold">Use the Botton to Share your Input Data </label>
+                            <div class="fs-7 fw-bold text-muted">Lets learn from each other!</div>
+                        </div>
+                        <!--end::Label-->
+                        <!--begin::Switch-->
+                        <label class="form-check form-switch form-check-custom form-check-solid">
+                            <input class="form-control form-control-solid" type="file" multiple required name="files" />
+
+                        </label>
+
+                        <!--end::Switch-->
+                    </div>
+
+
+                    <!--end::Input group-->
+                    <!--begin::Actions-->
+                    <div class="text-center">
+                        <button type="reset" id="kt_modal_new_target_cancel" class="btn btn-light me-3">Cancel</button>
+
+
+                        <button type="submit" id="kt_modal_new_target_submit" asp-controller="DataCenter" asp-action="DataInputUpload" class="btn btn-primary">
+                            <span class="indicator-label">Upload</span>
+                            <span class="indicator-progress">
+                                Please wait...
+                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                            </span>
+                        </button>
+                    </div>
+                    <!--end::Actions-->
+                </form>
+                <!--end:Form-->
+            </div>
+            <!--end::Modal body-->
+        </div>
+        <!--end::Modal content-->
+    </div>
+    <!--end::Modal dialog-->
+</div>
+<!--end::Modal - New Target-->
+
+
+<script type="text/javascript">
+  function RefreshPage()
+  {
+    window.location.reload()
+  }
+</script>
+
+
+<script src="/assets/plugins.bundle.js"></script>
+<script src="/assets/prismjs.bundle.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.slim.js" integrity="sha256-HwWONEZrpuoh951cQD1ov2HUK5zA5DwJ1DNUXaM6FsY=" crossorigin="anonymous"></script>
+
+
+
+
+
+<script src="/assets/js/select2.js"></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js" integrity="sha512-yFjZbTYRCJodnuyGlsKamNE/LlEaEAxSUDe5+u61mV8zzqJVFOH7TnULE2/PP/l5vKWpUNnF4VGVkXh3MjgLsg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>num

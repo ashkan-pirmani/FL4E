@@ -1,0 +1,33 @@
+﻿@using FL_Server.Models.Models.DataModel.DataCore
+@model IEnumerable<DataCoreFileOnSystemModel>
+
+
+
+<div class="card card-custom gutter-b">
+    <div class="card-header">
+        <div class="card-title">
+            <h3 class="card-label">
+                Upload Log Center
+                <small>Here You Can Trace the Logs of the Latest Upload based on their Data Dictionary ID</small>
+            </h3>
+        </div>
+    </div>
+    <div class="card-body">
+        <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
+            <table class="table table-responsive table-bordered">
+                <tr>
+                    <th>File Name</th>
+                    <th></th>
+                </tr>
+                @foreach (DataCoreFileOnSystemModel file in Model)
+                {
+                    <tr>
+                        <td>@file.Name</td>
+                        <td><a href="/DataScientist/AnalysisCenter/DownloadCentral?filename=@file.Name">Download</a></td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+</div>
+

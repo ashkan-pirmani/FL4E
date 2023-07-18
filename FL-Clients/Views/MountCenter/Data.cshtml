@@ -1,0 +1,149 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<h4 class="text-white">Start Uploading Files Here</h4>
+<hr />
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-success alert-dismissible" style="margin-top:20px">
+        @ViewBag.Message
+    </div>
+}
+<form method="post" class="text-white" enctype="multipart/form-data">
+    <input type="file" name="files" multiple required />
+    <input type="text" autocomplete="off" placeholder="Enter File Description" name="description" required />
+    <button type="submit" class="btn btn-primary" asp-controller="MountCenter" asp-action="UploadToFileSystem">Upload to File System</button>
+</form>
+<hr />*@
+
+						<div class="card">
+								<!--begin::Card body-->
+								<div class="card-body">
+									<!--begin::Heading-->
+									<div class="card-px text-center pt-15 pb-15">
+										<!--begin::Title-->
+										<h2 class="fs-2x fw-bolder mb-0">Ready For Federated Learning on Your Local?</h2>
+										<!--end::Title-->
+										<!--begin::Description-->
+										<p class="text-gray-400 fs-4 fw-bold py-7">Click on the below buttons to Mount  
+										<br>Your Data with the Container</p>
+										<!--end::Description-->
+										<!--begin::Action-->
+										<a href="#" class="btn btn-primary er fs-6 px-8 py-4" data-bs-toggle="modal" data-bs-target="#kt_modal_new_target">Mount it!</a>
+										<!--end::Action-->
+									</div>
+									<!--end::Heading-->
+									<!--begin::Illustration-->
+									<div class="text-center pb-15 px-5">
+										<img src="/assetsLay/media/illustrations/dozzy-1/17.png" alt="" class="mw-100 h-200px h-sm-325px">
+									</div>
+									<!--end::Illustration-->
+								</div>
+								<!--end::Card body-->
+							</div>
+
+			<!--begin::Modal - New Target-->
+		<div class="modal fade" id="kt_modal_new_target" tabindex="-1" aria-hidden="true">
+			<!--begin::Modal dialog-->
+			<div class="modal-dialog modal-dialog-centered mw-650px">
+				<!--begin::Modal content-->
+				<div class="modal-content rounded">
+					<!--begin::Modal header-->
+					<div class="modal-header pb-0 border-0 justify-content-end">
+						<!--begin::Close-->
+						<div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+							<!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
+							<span class="svg-icon svg-icon-1">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+									<rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="black" />
+									<rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="black" />
+								</svg>
+							</span>
+							<!--end::Svg Icon-->
+						</div>
+						<!--end::Close-->
+					</div>
+
+
+
+
+
+
+
+
+
+
+
+					<!--begin::Modal header-->
+					<!--begin::Modal body-->
+					<div class="modal-body scroll-y px-10 px-lg-15 pt-0 pb-15">
+						<!--begin:Form-->
+						<form id="kt_modal_new_target_form" method="post" class="form" action="#" enctype="multipart/form-data">
+							<!--begin::Heading-->
+							<div class="mb-13 text-center">
+								<!--begin::Title-->
+								<h1 class="mb-3">First Step</h1>
+								<!--end::Title-->
+								<!--begin::Description-->
+								<div class="text-muted fw-bold fs-5">If you need more info, please check
+								<a href="#" class="fw-bolder link-primary">Guidelines and FAQ</a>.</div>
+								<!--end::Description-->
+							</div>
+							<!--end::Heading-->
+							<!--begin::Input group-->
+							<div class="d-flex flex-column mb-8 fv-row">
+								<!--begin::Label-->
+								<label class="d-flex align-items-center fs-6 fw-bold mb-2">
+									<span class="required">Description</span>
+
+									<i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify a target name for future usage and reference"></i>
+								</label>
+								<!--end::Label-->
+								<input type="text" class="form-control form-control-solid" placeholder="Enter File Description" name="description" />
+							</div>
+							<!--end::Input group-->
+							
+							
+							
+							<!--begin::Input group-->
+							<div class="d-flex flex-stack mb-8">
+								<!--begin::Label-->
+								<div class="me-5">
+									<label class="fs-6 fw-bold">Use the Botton to Mount your Data</label>
+									<div class="fs-7 fw-bold text-muted">Bear in Mind that your data will always stays at local</div>
+								</div>
+								<!--end::Label-->
+								<!--begin::Switch-->
+								<label class="form-check form-switch form-check-custom form-check-solid">
+									<input class="form-control form-control-solid" type="file" multiple required  name="files" />
+@*									<span class="form-check-label fw-bold text-muted">file</span>
+*@								</label>
+								<!--end::Switch-->
+							</div>
+							<!--end::Input group-->
+							<!--end::Input group-->
+							<!--begin::Actions-->
+							<div class="text-center">
+								<button type="reset" id="kt_modal_new_target_cancel" class="btn btn-light me-3">Cancel</button>
+
+
+								<button type="submit" id="kt_modal_new_target_submit" asp-controller="MountCenter" asp-action="UploadToFileSystem" class="btn btn-primary">
+									<span class="indicator-label">Submit</span>
+									<span class="indicator-progress">Please wait...
+									<span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+								</button>
+							</div>
+							<!--end::Actions-->
+						</form>
+						<!--end:Form-->
+					</div>
+					<!--end::Modal body-->
+				</div>
+				<!--end::Modal content-->
+			</div>
+			<!--end::Modal dialog-->
+		</div>
+		<!--end::Modal - New Target-->

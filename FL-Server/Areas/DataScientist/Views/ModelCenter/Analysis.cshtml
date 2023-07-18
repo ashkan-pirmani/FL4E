@@ -1,0 +1,132 @@
+﻿@*@model IEnumerable<FL_Server.Models.Models.ModelCenter>
+*@
+@model FL_Server.Models.HomeViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+
+<div class="card card-custom">
+    <div class="card-header">
+        <div class="card-title">
+            <span class="card-icon">
+                <i class="flaticon2-chat-1 text-primary"></i>
+            </span>
+            <h3 class="card-label">
+        @Model.modelCenterList.FirstOrDefault().ModelCatalogue.Title
+                <small>Lets Break the Silos</small>
+            </h3>
+        </div>
+    </div>
+    <div class="card-body" data-scroll="true" data-height="200">
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                     <th>
+                        @*@Html.DisplayNameFor(model => model.StudyCatalogue.Title)*@
+                        Model Title
+                    </th>
+                      <th>
+                        Analysis Center Reference
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ModelCenter.ModelType)
+                    </th>
+                    <th>
+                        @* @Html.DisplayNameFor(model => model.ApplicationUser)*@
+                        Provided By?
+                    </th>
+                    <th>
+                        Script
+                    </th>
+                    <th>
+                         @Html.DisplayNameFor(model => model.ModelCenter.DSS)
+                    </th>
+                  
+                    <th>
+                        @Html.DisplayNameFor(model => model.ModelCenter.LastUpdate)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.modelCenterList)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StudyCenter.Title)
+                        </td>
+                        
+
+                        <td>
+                            @if (item.ModelType == true)
+                            {
+                                <a class="btn btn-success btn-sm font-weight-bold">Public</a>
+
+                            }
+                            else
+                            {
+                                <a class="btn btn-danger btn-sm font-weight-bold">Private</a>
+
+                            }
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ApplicationUser.LastName)
+                        </td>
+                        <td>
+                            @if (item.FileModel != null)
+                            {
+                                <a class="btn btn-success btn-sm font-weight-bold">Script Included</a>
+
+                            }
+                            else
+                            {
+                                <a class="btn btn-danger btn-sm font-weight-bold">Script Not Included</a>
+
+                            }
+
+                        </td>
+                        <td>
+
+                              @if (item.DSS == false)
+                            {
+                                <a class="btn btn-danger btn-sm font-weight-bold">DSS Not Included</a>
+
+                            }
+                            else
+                            {
+                                <a class="btn btn-success btn-sm font-weight-bold">DSS Included</a>
+
+                            }
+
+                        </td>
+                        
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LastUpdate)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+    <div class="card-footer d-flex justify-content-between">
+        <a asp-area="DataScientist" asp-controller="ModelCatalogue" asp-action="Index" class="btn btn-light-primary font-weight-bold">Back To Model Catalogue?</a>
+        <a href="#" class="btn btn-outline-secondary font-weight-bold text-dark">Learn more</a>
+    </div>
+</div>
+
+
+
+

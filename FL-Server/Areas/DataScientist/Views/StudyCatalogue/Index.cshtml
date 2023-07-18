@@ -1,0 +1,126 @@
+﻿@model HomeViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+
+
+
+<div class="card card-custom" >
+    <div class="card-header">
+        <div class="card-title">
+            <span class="card-icon">
+                <i class="flaticon2-chat-1 text-primary"></i>
+            </span>
+            <h3 class="card-label">
+                Study Catalogue
+                <small>Lets learn from each other</small>
+            </h3>
+        </div>
+        <div class="card-toolbar">
+            <a asp-action="Create" class="btn btn-sm btn-light-primary font-weight-bold">
+                <i class="flaticon2-cube"></i> Create New Study?
+            </a>
+        </div>
+    </div>
+    <div class="card-body">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="col-2">
+                        @Html.DisplayNameFor(model => model.StudyCatalogue.Title)
+                    </th>
+                    <th class="col-5">
+                        @Html.DisplayNameFor(model => model.StudyCatalogue.Description)
+                    </th>
+                    <th class="col-1">
+                        @Html.DisplayNameFor(model => model.StudyCatalogue.StudyLead)
+                    </th>
+                    <th class="col-1">
+                        @Html.DisplayNameFor(model => model.StudyCatalogue.Status)
+                    </th>
+                     <th class="col-1">
+                        Data Included
+                    </th>
+                    <th class="col-1">
+                        @Html.DisplayNameFor(model => model.StudyCatalogue.StartDate)
+                    </th>
+                    <th class="col-2"></th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var item in Model.studyCatalogueList)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StudyLead)
+                        </td>
+                        <td>
+                            @if (item.Status == true)
+                            {
+                                <a class="btn btn-light-success font-weight-bold">Active</a>
+
+                            }
+                            else
+                            {
+                                <a class="btn btn-light-danger font-weight-bold">Deactive</a>
+
+                            }
+                        </td>
+                          <td> @if(Model.dataCoreFileOnSystemModel.Where(m=>m.StudyCatalogueId == item.Id).Count() != 0 )
+                              {
+                           
+@*                                @Html.DisplayFor(m=>m.dataCoreFileOnSystemModel.Where(m=>m.StudyCatalogueId == item.Id).FirstOrDefault().DataCorePath)
+*@
+
+                                 <a class="btn btn-light-success font-weight-bold">Data Is Included</a>
+
+                              }
+                            else
+                            {
+                              
+                                 <a class="btn btn-light-danger font-weight-bold">Data Is Not Included</a>
+
+                            }
+
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StartDate)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+               
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer d-flex justify-content-between">
+        <a asp-area="DataScientist" asp-controller="StudyCenter" asp-action="Index" class="btn btn-light-primary font-weight-bold">List of All Analyses?</a>
+        <a href="#" class="btn btn-outline-secondary font-weight-bold">Learn more</a>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+

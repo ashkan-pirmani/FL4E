@@ -1,0 +1,634 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+
+
+
+
+
+
+<div class="card card-custom ">
+ <div class="card-header">
+  <div class="card-title">
+            <span class="card-icon">
+                <i class="flaticon2-chat-1 text-primary"></i>
+            </span>
+   <h3 class="card-label">
+    DSS
+    <small>Interactive Decision Support System</small>
+   </h3>
+  </div>
+       
+ </div>
+ <div class="card-body">
+  <div>
+
+      <div class="row">
+      <div style="margin-top:65px" class="col-xl-4">
+
+        <p class="ageslider">
+          <label for="nRadius">Radius: <span id="nRadius-value">…</span><br></label>
+          <input id="nRadius" max="30" min="5" style="width: 150px;" type="range">
+        </p>
+
+        <p class="ageslider">
+          <label for="nPerimeter">Perimeter: <span id="nPerimeter-value">…</span><br></label>
+          <input id="nPerimeter" max="200" min="25" style="width: 150px;" type="range">
+        </p>
+
+        <p class="ageslider">
+          <label for="nArea">Area: <span id="nArea-value">…</span><br></label>
+          <input id="nArea" max="3000" min="50" style="width: 150px;" type="range">
+        </p>
+
+        <p class="ageslider">
+          <label for="nSmoothness">Smoothness: <span id="nSmoothness-value">…</span><br></label>
+          <input id="nSmoothness" max="10" min="0" style="width: 150px;" type="range">
+        </p>
+
+        <p class="ageslider">
+          <label for="nCompactness">Compactness: <span id="nCompactness-value">…</span><br></label>
+          <input id="nCompactness" max="10" min="0" style="width: 150px;" type="range">
+        </p>
+
+        <p class="ageslider">
+          <label for="nConcavity">Concavity: <span id="nConcavity-value">…</span><br></label>
+          <input id="nConcavity" max="10" min="0" style="width: 150px;" type="range">
+        </p>
+
+        <p class="ageslider">
+          <label for="nConcavePoints">Concave Points: <span id="nConcavePoints-value">…</span><br></label>
+          <input id="nConcavePoints" max="10" min="0" style="width: 150px;" type="range">
+        </p>
+
+        <p class="ageslider">
+          <label for="nSymmetry">Symmetry: <span id="nSymmetry-value">…</span><br></label>
+          <input id="nSymmetry" max="10" min="0" style="width: 150px;" type="range">
+        </p>
+
+        <p class="ageslider">
+          <label for="nFractalDimension">Fractal Dimension: <span id="nFractalDimension-value">…</span><br></label>
+          <input id="nFractalDimension" max="10" min="0" style="width: 150px;" type="range">
+        </p>
+        </div>
+
+        <div class="col-xl-8">
+        <div  id="DSS"> </div>
+        </div>
+        </div>
+    </div>
+ </div>
+    <div class="card-footer d-flex justify-content-between">
+        <a asp-area="DataScientist" asp-action="index" asp-controller="ModelCenter"  class="btn btn-primary font-weight-bold">Back To Model Center?</a>
+        <a href="#" class="btn btn-secondary font-weight-bold">Learn more</a>
+ </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script> 
+    <script>
+
+    var intercept = 32.92467424
+    var bmibeta = .0953
+    var agebeta = .0491
+    var malebeta = .3775
+
+    var radiusbeta = 0.54179017
+    var texturebeta = -0.24393629
+    var perimeterbeta = -0.51941584
+    var areabeta = 0.02034205
+    var smoothnessbeta = -0.08166926
+    var compactnessbeta = -0.16983104
+    var concavitybeta = -0.26700033
+    var concavepointsbeta = -0.13611154
+    var symmetrybeta = -0.12011211
+    var fractaldimensionbeta = -0.02633843
+
+    var pdata = ['prob_now'];
+
+    bmi_values =  [5,10,15,20,25,30,35,40]
+
+    default_radius = 15
+    default_perimeter = 100
+    default_area = 650
+    default_smoothness = 1
+    default_compactness = 1
+    default_concavity = 1
+    default_concave_points = 1
+    default_symmetry = 2
+    default_fractal_dimension = 1
+
+    default_is_male = 1
+    defaultGenderText = "male"
+
+    data = [];
+
+    d3.select("#nRadius-value").text(default_radius);
+    d3.select("#nRadius").property("value", default_radius);
+
+    d3.select("#nArea-value").text(default_area);
+    d3.select("#nArea").property("value", default_area);
+
+    d3.select("#nPerimeter-value").text(default_perimeter);
+    d3.select("#nPerimeter").property("value", default_perimeter);
+
+    d3.select("#nSmoothness-value").text(default_smoothness);
+    d3.select("#nSmoothness").property("value", default_smoothness);
+
+    d3.select("#nCompactness-value").text(default_compactness);
+    d3.select("#nCompactness").property("value", default_compactness);
+
+    d3.select("#nConcavity-value").text(default_concavity);
+    d3.select("#nConcavity").property("value", default_concavity);
+
+    d3.select("#nConcavePoints-value").text(default_concave_points);
+    d3.select("#nConcavePoints").property("value", default_concave_points);
+
+    d3.select("#nSymmetry-value").text(default_symmetry);
+    d3.select("#nSymmetry").property("value", default_symmetry);
+
+    d3.select("#nFractalDimension-value").text(default_fractal_dimension);
+    d3.select("#nFractalDimension").property("value", default_fractal_dimension);
+
+    d3.select("#nGender-value").text(defaultGenderText);
+    d3.select("#nGender").property("value", default_is_male);
+
+    data = buildData(default_radius, default_perimeter, default_area, default_smoothness, default_compactness, default_concavity, default_concave_points, default_symmetry, default_fractal_dimension);
+
+    function buildData( radius,  perimeter,  area,  smoothness,  compactness,  concavity,  concave_points,  symmetry,  fractal_dimension) {
+        data = []
+        bmi_values.forEach(function(element) {
+
+            //var prob_now_calc = 1/(1 + Math.exp(-(intercept+bmibeta*element+agebeta*age)))
+
+            var prob_now_calc = 1/(1 + Math.exp(-(intercept+texturebeta*element + perimeterbeta*perimeter + areabeta*area + radiusbeta*radius + 0.1*smoothnessbeta*smoothness + 0.1*compactnessbeta*compactness + 0.1*concavitybeta*concavity + 0.1*concavepointsbeta*concave_points + 0.1*symmetrybeta*symmetry + 0.1*fractaldimensionbeta*fractal_dimension)))
+
+            var bmi_value_object = {'texture':element,
+                                'prob_now':prob_now_calc};
+
+            data.push(bmi_value_object);
+
+        });
+        return data;
+    };
+
+    // when the input range changes update the graphs
+
+    d3.select("#nRadius").on("input", function() {
+    default_radius = +this.value;
+    update(default_radius,default_perimeter, default_area, default_smoothness, default_compactness, default_concavity, default_concave_points, default_symmetry, default_fractal_dimension,default_is_male);
+    });
+
+    d3.select("#nPerimeter").on("input", function() {
+    default_perimeter = +this.value;
+    update(default_radius,default_perimeter, default_area, default_smoothness, default_compactness, default_concavity, default_concave_points, default_symmetry, default_fractal_dimension,default_is_male);
+    });
+
+    d3.select("#nArea").on("input", function() {
+    default_area = +this.value;
+    update(default_radius,default_perimeter, default_area, default_smoothness, default_compactness, default_concavity, default_concave_points, default_symmetry, default_fractal_dimension,default_is_male);
+    });
+
+    d3.select("#nSmoothness").on("input", function() {
+    default_smoothness = +this.value;
+    update(default_radius,default_perimeter, default_area, default_smoothness, default_compactness, default_concavity, default_concave_points, default_symmetry, default_fractal_dimension,default_is_male);
+    });
+
+    d3.select("#nCompactness").on("input", function() {
+    default_compactness = +this.value;
+    update(default_radius,default_perimeter, default_area, default_smoothness, default_compactness, default_concavity, default_concave_points, default_symmetry, default_fractal_dimension,default_is_male);
+    });
+
+    d3.select("#nConcavity").on("input", function() {
+    default_concavity = +this.value;
+    update(default_radius,default_perimeter, default_area, default_smoothness, default_compactness, default_concavity, default_concave_points, default_symmetry, default_fractal_dimension,default_is_male);
+    });
+
+    d3.select("#nConcavePoints").on("input", function() {
+    default_concave_points = +this.value;
+    update(default_radius,default_perimeter, default_area, default_smoothness, default_compactness, default_concavity, default_concave_points, default_symmetry, default_fractal_dimension,default_is_male);
+    });
+
+    d3.select("#nSymmetry").on("input", function() {
+    default_symmetry = +this.value;
+    update(default_radius,default_perimeter, default_area, default_smoothness, default_compactness, default_concavity, default_concave_points, default_symmetry, default_fractal_dimension,default_is_male);
+    });
+
+    d3.select("#nFractalDimension").on("input", function() {
+    default_fractal_dimension = +this.value;
+    update(default_radius,default_perimeter, default_area, default_smoothness, default_compactness, default_concavity, default_concave_points, default_symmetry, default_fractal_dimension,default_is_male);
+    });
+
+    // update the elements
+    function update(nRadius,nPerimeter,nArea,nSmoothness, nCompactness, nConcavity, nConcavePoints, nSymmetry, nFractalDimension, Gender) {
+    // adjust the text on the range slider
+
+    d3.select("#nRadius-value").text(nRadius);
+    d3.select("#nRadius").property("value", nRadius);
+
+    d3.select("#nArea-value").text(nArea);
+    d3.select("#nArea").property("value", nArea);
+
+    d3.select("#nPerimeter-value").text(nPerimeter);
+    d3.select("#nPerimeter").property("value", nPerimeter);
+
+    d3.select("#nSmoothness-value").text(nSmoothness);
+    d3.select("#nSmoothness").property("value", nSmoothness);
+
+    d3.select("#nCompactness-value").text(nCompactness);
+    d3.select("#nCompactness").property("value", nCompactness);
+
+    d3.select("#nConcavity-value").text(nConcavity);
+    d3.select("#nConcavity").property("value", nConcavity);
+
+    d3.select("#nConcavePoints-value").text(nConcavePoints);
+    d3.select("#nConcavePoints").property("value", nConcavePoints);
+
+    d3.select("#nSymmetry-value").text(nSymmetry);
+    d3.select("#nSymmetry").property("value", nSymmetry);
+
+    d3.select("#nFractalDimension-value").text(nFractalDimension);
+    d3.select("#nFractalDimension").property("value", nFractalDimension);
+
+    d3.select("#nGender-value").text(defaultGenderText);
+    d3.select("#nGender").property("value", default_is_male);
+
+    data = buildData(default_radius, default_perimeter, default_area, default_smoothness, default_compactness, default_concavity, default_concave_points, default_symmetry, default_fractal_dimension);
+
+
+    xmain.domain(d3.extent(data, function(d) { return d.texture; }));
+
+    y_axis_range_max_range = d3.extent(data, function(d) { return d.prob_now; });
+    y_axis_range_min_range = d3.extent(data, function(d) { return d.prob_now; });
+    y_axis_range_max = Math.min(1,y_axis_range_max_range[1]*1.1)
+    y_axis_range_min = y_axis_range_min_range[0]*.8
+    ymain.domain([y_axis_range_min,y_axis_range_max]);
+
+    xbrush.domain(xmain.domain());
+    ybrush.domain(ymain.domain());
+
+    focus.selectAll("path.focusdata").attr("d", function (prob_when) {
+      return areaMain(prob_when)(data);
+    });
+
+
+    focus.select(".x.axis").call(xAxis);
+    focus.select(".y.axis").call(yAxis);
+
+    }
+
+    // svg helpers
+    function brushed() {
+    xmain.domain(brush.empty() ? xbrush.domain() : brush.extent());
+
+    var dataFiltered = data.filter(function(d, i) {
+        if ( (d.texture>= xmain.domain()[0]) && (d.texture <= xmain.domain()[1]) ) {
+            return d.prob_now;
+        }
+    })
+
+    var max = d3.max(dataFiltered.map(function(d) { return d.prob_now; }));
+
+    if (typeof max === "undefined") {
+        ymain.domain(brush.empty() ? ybrush.domain() : y_axis_range);
+    } else {
+        y_axis_range = [0, Math.min(max*1.1,1)]
+        ymain.domain(brush.empty() ? ybrush.domain() : y_axis_range);
+    }
+
+    focus.selectAll("path.focusdata").attr("d", function (prob_when) {
+        return areaMain(prob_when)(data);
+    });
+
+    focus.select(".x.axis").call(xAxis);
+    focus.select(".y.axis").call(yAxis);
+    }
+
+
+    var areaMain = function (prob_when) {
+    return d3.svg.line()
+        .interpolate("monotone")
+        .x(function(d) {
+            return xmain(d.texture); })
+
+        .y(function(d) {
+            return ymain(d[prob_when]);
+    });
+    };
+
+
+    var areaBrush = function (prob_when) {
+    return d3.svg.line()
+        .interpolate("monotone")
+        .x(function(d) { return xbrush(d.texture); })
+
+        .y(function(d) { return ybrush(d[prob_when]);
+    });
+    };
+
+
+
+    //build our canvas
+
+    var margin = {top: 100, right: 60, bottom: 120, left: 50},
+    margin2 = {top: 330, right: 60, bottom: 25, left: 50},
+    width = 700 - margin.left - margin.right,
+    height = 450 - margin.top - margin.bottom,
+    height2 = 450 - margin2.top - margin2.bottom;
+
+
+    var xmain = d3.scale.linear().range([0, width]);
+    var xbrush = d3.scale.linear().range([0, width]);
+
+    var ymain = d3.scale.linear().range([height, 0]);
+    var ybrush = d3.scale.linear().range([height2, 0]);
+
+    var xAxis = d3.svg.axis().scale(xmain).orient("bottom");
+    var xAxis2 = d3.svg.axis().scale(xbrush).orient("bottom");
+
+    var yAxis = d3.svg.axis()
+    .scale(ymain)
+    .orient("left");
+
+    var brush = d3.svg.brush()
+    .x(xbrush)
+
+    .on("brush", brushed);
+
+
+    var svg = d3.select("#DSS").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom);
+
+
+    var legendRectSize = 18;
+    var legendSpacing = 4;
+
+
+
+    svg.append("defs").append("clipPath")
+    .attr("id", "clip")
+    .append("rect")
+    .attr("width", width)
+    .attr("height", height);
+
+
+
+
+    var color_hash = {  0 : ["prob_now", "blue","Risk profile"],
+    1 : ["prob_now", "blue","Risk profile"],
+    2 : ["prob_now", "blue","Risk profile"]
+    }
+
+
+    // add legend
+    var legend = svg.append("g")
+      .attr("class", "legend")
+      .attr("height", 100)
+      .attr("width", 100)
+      .attr('transform', 'translate(-630,100)')
+
+
+       legend.selectAll('rect')
+      .data(pdata)
+      .enter()
+      .append("rect")
+      .attr("x", width+150)
+      .attr("y", function(d, i){ return i *  30;})
+      .attr("width", 20)
+      .attr("height", 20)
+      .style("fill", function(d) {
+        var color = color_hash[pdata.indexOf(d)][1];
+        return color;
+      })
+
+      legend.selectAll('text')
+      .data(pdata)
+      .enter()
+      .append("text")
+      .attr("x", width + 180)
+      .attr("y", function(d, i){ return i * 30 + 15;})
+      .text(function(d) {
+        var text = color_hash[pdata.indexOf(d)][2];
+        return text;
+      });
+
+
+    var focus = svg.append("g")
+    .attr("class", "focus")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+    xmain.domain(d3.extent(data, function(d) { return d.texture; }));
+
+    y_axis_range_max_range = d3.extent(data, function(d) { return d.prob_now; });
+    y_axis_range_min_range = d3.extent(data, function(d) { return d.prob_now; });
+    y_axis_range_max = Math.min(1,y_axis_range_max_range[1]*1.1)
+    y_axis_range_min = y_axis_range_min_range[0]*.8
+    ymain.domain([y_axis_range_min,y_axis_range_max]);
+
+
+    xbrush.domain(xmain.domain());
+    ybrush.domain(ymain.domain());
+
+    focus.selectAll('path')
+    .data(pdata)
+    .enter()
+    .append('path')
+    .attr('clip-path', 'url(#clip)')
+    .attr('d', function (prob_when) {
+      return areaMain(prob_when)(data);
+    })
+    .attr('class', function (prob_when) {
+      return "path_" + prob_when + " focusdata";
+    });
+
+    focus.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis)
+    .append("text")
+        .attr("class", "x label")
+        .attr("x", width*.99)
+        .attr("y", -6)
+        .style("text-anchor", "end")
+        .text("Tumor Texture");
+
+    focus.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+    .append("text")
+      .attr("class", "y label")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".75em")
+      .style("text-anchor", "end")
+      .text("Probability of Malignant Tumor");
+
+
+    // THIS CODE SHOWS THE VALUES OM THE LINE
+    var bisectBMI = d3.bisector(function(d) { return d.texture; }).left
+    var formatProb = d3.format(",.2f")
+    var formatBMI = d3.format(",.1f")
+    var three_paths = focus.selectAll("path.focusdata")[0];
+
+    var focusMarkers = focus.append("g")
+      .attr("class", "focusMarkers")
+      .style("display", "none");
+
+    focusMarkers.selectAll("g")
+      .data(pdata)
+      .enter()
+      .append("g")
+      .attr("id", function(d, i) {
+        return "focusMarker_"+d;
+      })
+      .append("circle")
+      .attr("r", 10)
+
+
+    var ymarkershift = 40
+    var xmarkershift = -190
+
+    focusMarkers.select("g").append("text")
+      .attr("class","movingmarkertext")
+      .attr("x", xmarkershift)
+      .attr("y",30-ymarkershift)
+      .attr("dy", ".35em")
+      .attr("id","prob_now_circle_label");
+
+
+    focus.append("rect")
+      .attr("class", "overlay")
+      .attr("width", width)
+      .attr("height", height)
+      .on("mouseover", function() { focusMarkers.style("display", null); })
+      .on("mouseout", function() { focusMarkers.style("display", "none"); })
+      .on("mousemove", mousemove);
+
+    var verticalLine = focus.append('line')
+
+    .attr({
+      'x1': 0,
+      'y1': 0,
+      'x2': 0,
+      'y2': height
+    })
+      .attr("stroke", "steelblue")
+      .attr('class', 'verticalLine');
+
+    function mousemove() {
+
+        var x0 = xmain.invert(d3.mouse(this)[0]),
+            i = bisectBMI(data, x0, 1),
+            d0 = data[i - 1],
+            d1 = data[i],
+            d = x0 - d0.texture > d1.texture - x0 ? d1 : d0;
+
+
+        xLoc = xmain(d.texture)
+
+        focusMarkers.select("#focusMarker_prob_now")
+        .attr("transform", "translate(" + xLoc + "," + ymain(d.prob_now) + ")");
+
+        focusMarkers.select("#prob_now_circle_label")
+        .text("Risk: " + formatProb(d.prob_now));
+
+
+
+         d3.select(".verticalLine").attr("transform", function () {
+         return "translate(" + xLoc + ",0)";
+          });
+
+    }
+
+    </script>
+
+
+     <style>
+/*
+    body {
+    font: 16px sans-serif;
+    color: black;
+    }*/
+
+    .axis path,
+    .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+    stroke-width:4.5px;
+    }
+
+   /* div {
+    margin: auto;
+    padding: 50px 15px;
+    }*/
+
+    /*.ageslider, .genderButtons {
+    font: 18px sans-serif;
+    margin-left: 20%;
+    height: 5px;
+    float: left;
+    text-align: center;
+    font-weight: bold;
+    padding: 5px;
+    }*/
+
+     .ageslider {
+        margin-right: 2%;
+
+     }
+
+
+    .overlay {
+    fill: none;
+    pointer-events: all;
+    }
+
+    .focusMarkers circle {
+    fill: none;
+    stroke: black;
+    }
+
+    .movingmarkertext {
+      stroke:none;
+      font-weight: bold;
+    }
+
+
+    .legend {
+    padding: 5px;
+    font: 20px sans-serif;
+    background: yellow;
+    box-shadow: 2px 2px 1px #888;
+    }
+
+
+    .brush .extent {
+    stroke: #fff;
+    fill-opacity: .125;
+    shape-rendering: crispEdges;
+    }
+
+
+    .path_prob_now {
+    fill:none;
+    stroke:blue;
+    stroke-width:4.5px;
+    }
+
+    </style>

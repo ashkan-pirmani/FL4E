@@ -1,0 +1,131 @@
+﻿@model FL_Server.Models.Models.ModelCenter
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+
+<div class="card card-custom">
+    <div class="card-header">
+        <div class="card-title">
+            <span class="card-icon">
+                <i class="flaticon2-chat-1 text-primary"></i>
+            </span>
+            <h3 class="card-label">
+                ModelCenter
+                <small>Create</small>
+            </h3>
+        </div>
+
+    </div>
+    <div class="card-body">
+
+        <div class="row">
+            <div class="col-md-4">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Title" class="control-label"></label>
+                        <input asp-for="Title" class="form-control" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="StudyCenterID" class="control-label"></label>
+                        <select asp-for="StudyCenterID" class="form-control" asp-items="ViewBag.StudyCenterId">
+                                                        <option label=" "></option>
+
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="ModelCatalogueId" class="control-label"></label>
+                        <select asp-for="ModelCatalogueId" class="form-control" asp-items="ViewBag.ModelCatalogueId"></select>
+                    </div>
+                  
+                        @* <label class="form-check-label">
+                            <input class="form-check-input" asp-for="StudyType" /> @Html.DisplayNameFor(model => model.StudyType)
+                            </label>
+                        *@
+
+                        <div class="form-group">
+                            <label>Study Type</label>
+                            <div class="radio-inline">
+                                <label class="radio radio-lg">
+                                    <input asp-for="ModelType" type="radio" value="False" checked="checked">
+                                    <span></span>Private
+                                </label>
+                                <label class="radio radio-lg">
+                                    <input asp-for="ModelType" type="radio" value="True">
+                                    <span></span>Public
+                                </label>
+
+                            </div>
+                        </div>
+
+
+
+                   
+                    <div class="form-group">
+                        <label asp-for="FileModelId" class="control-label"></label>
+                        <select asp-for="FileModelId" class="form-control" asp-items="ViewBag.FileModelId">
+                            <option label=" "></option>
+
+                        </select>
+                    </div>
+
+                    
+
+
+                          <div class="form-group">
+                            <label>DSS</label>
+                            <div class="radio-inline">
+                                <label class="radio radio-lg">
+                                    <input asp-for="DSS" type="radio" value="False" checked="checked">
+                                    <span></span>No
+                                </label>
+                                <label class="radio radio-lg">
+                                    <input asp-for="DSS" type="radio" value="True">
+                                    <span></span>Included
+                                </label>
+
+                            </div>
+                        </div>
+
+                    <br />
+
+                    <div class="form-group">
+                     <a asp-action="Index" asp-controller="ScriptCenter" class="btn btn-primary">Upload Your Own Script?</a>
+
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer d-flex justify-content-between">
+        <a asp-action="Index" class="btn btn-light-primary font-weight-bold">Back to List</a>
+        @*        <a href="#" class="btn btn-outline-secondary font-weight-bold">Learn more</a>
+        *@
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+		<script src="/assets/js/select2.js"></script>
+
+
+
+
+@section Scripts {
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+}

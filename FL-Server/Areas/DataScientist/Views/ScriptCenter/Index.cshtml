@@ -1,0 +1,366 @@
+﻿@using FL_Server.Models.Models.Upload
+@model FileUploadViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-success alert-dismissible" style="margin-top:20px">
+        @ViewBag.Message
+    </div>
+}
+@*<form method="post" class="text-white" enctype="multipart/form-data">
+    <input type="file" name="files" multiple required />
+    <input type="text" autocomplete="off" placeholder="Enter File Description" name="description" required />
+    <button class="btn btn-success" type="submit" asp-controller="ScriptCenter" asp-action="UploadToDatabase">Upload to Database</button>
+    </form>
+    <hr />
+*@
+
+
+
+
+<div class="card card-custom gutter-b">
+    
+    <div class="card-body">
+        <!--begin::Example-->
+
+                <ul class="nav nav-pills" id="myTab1" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="home-tab-1" data-toggle="tab" href="#home-1">
+                            <span class="nav-icon">
+                                <i class="fa-solid fa-scroll"></i>
+                            </span>
+                            <span class="nav-text">Scripts Repository</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="profile-tab-1" data-toggle="tab" href="#profile-1" aria-controls="profile">
+                            <span class="nav-icon ">
+<i class="fa-solid fa-gear"></i>                            </span>
+                            <span class="nav-text">Models Repository</span>
+                        </a>
+                    </li>
+                     <div class="card-toolbar " style="margin-left: auto;">
+            <a data-bs-toggle="modal" data-bs-target="#kt_modal_new_target" class="btn btn-sm btn-success font-weight-bold">
+                <i class="fa-solid fa-file-arrow-up"></i> Upload a new item?
+            </a>
+        </div>
+                </ul>
+
+                <div class="tab-content " id="myTabContent1">
+                    <div class="tab-pane fade active show" id="home-1" role="tabpanel" aria-labelledby="home-tab-1">
+
+                        <div class="card card-custom">
+
+                            <div class="card-body">
+
+
+                                @if (Model.FilesOnDatabase.Count == 0)
+                                {
+                                    <caption>No Records Found</caption>
+                                }
+                                else
+                                {
+                                    <caption>List of Files on Database</caption>
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Description</th>
+                                                <th>Created By</th>
+                                                <th>Study Catalogue</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var file in Model.FilesOnDatabase)
+                                            {
+                                                @if (file.StudyCatalogueId != null)
+                                                {
+                                                    <tr>
+                                                        <td>@file.Name</td>
+                                                        <td>@file.Description</td>
+                                                        <td>@file.ApplicationUser.LastName</td>
+                                                        <td class="col-2">
+                                                            <a asp-controller="StudyCatalogue" asp-action="Details" asp-route-id="@file.StudyCatalogueId">@Html.DisplayFor(modelItem => file.StudyCatalogue.Title)</a>
+                                                        </td>
+
+
+                                                        <td>
+                                                            <a type="button" class="btn btn-primary" asp-controller="ScriptCenter" asp-action="DownloadFileFromDatabase" asp-route-id="@file.Id">Download</a>
+                                                            <a type="button" class="btn btn-danger" asp-controller="ScriptCenter" asp-action="DeleteFileFromDatabase" asp-route-id="@file.Id">Delete</a>
+                                                        </td>
+                                                    </tr>
+                                                }
+
+
+                                            }
+
+                                        </tbody>
+                                    </table>
+                                }
+                            </div>
+                            <div class="card-footer d-flex justify-content-between">
+                                <a asp-area="DataScientist" asp-controller="StudyCatalogue" asp-action="Index" class="btn btn-primary font-weight-bold">Study Catalogue?</a>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+
+                    <div class="tab-pane fade" id="profile-1" role="tabpanel" aria-labelledby="profile-tab-1">
+
+
+                        <div class="card card-custom">
+
+                            <div class="card-body">
+
+
+                                @if (Model.FilesOnDatabase.Count == 0)
+                                {
+                                    <caption>No Records Found</caption>
+                                }
+                                else
+                                {
+                                    <caption>List of Files on Database</caption>
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Description</th>
+                                                <th>Created By</th>
+                                                <th>Model Catalogue</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var file in Model.FilesOnDatabase)
+                                            {
+
+                                                @if (file.ModelCatalogueId != null)
+
+                                                {
+                                                    <tr>
+                                                        <td>@file.Name</td>
+                                                        <td>@file.Description</td>
+                                                        <td>@file.ApplicationUser.LastName</td>
+                                                        <td class="col-2">
+                                                            <a asp-controller="ModelCatalogue" asp-action="Details" asp-route-id="@file.ModelCatalogueId">@Html.DisplayFor(modelItem => file.ModelCatalogue.Title)</a>
+                                                        </td>
+
+                                                        <td>
+                                                            <a type="button" class="btn btn-primary" asp-controller="ScriptCenter" asp-action="DownloadFileFromDatabase" asp-route-id="@file.Id">Download</a>
+                                                            <a type="button" class="btn btn-danger" asp-controller="ScriptCenter" asp-action="DeleteFileFromDatabase" asp-route-id="@file.Id">Delete</a>
+                                                        </td>
+                                                    </tr>
+
+                                                }
+
+
+                                            }
+
+                                        </tbody>
+                                    </table>
+                                }
+                            </div>
+                            <div class="card-footer d-flex justify-content-between">
+                                <a asp-area="DataScientist" asp-controller="ModelCatalogue" asp-action="Index" class="btn btn-primary font-weight-bold">Model Catalogue?</a>
+                            </div>
+
+                        </div>
+
+
+
+
+                    </div>
+                </div>
+
+
+        <!--end::Example-->
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+<br />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--begin::Modal - New Target-->
+<div class="modal fade" id="kt_modal_new_target" tabindex="-1" aria-hidden="true">
+    <!--begin::Modal dialog-->
+    <div class="modal-dialog modal-dialog-centered mw-650px">
+        <!--begin::Modal content-->
+        <div class="modal-content rounded">
+            <!--begin::Modal header-->
+            <div class="modal-header pb-0 border-0 justify-content-end">
+                <!--begin::Close-->
+                <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+                    <!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
+                    <span class="svg-icon svg-icon-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="black" />
+                            <rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="black" />
+                        </svg>
+                    </span>
+                    <!--end::Svg Icon-->
+                </div>
+                <!--end::Close-->
+            </div>
+
+
+            <!--begin::Modal header-->
+            <!--begin::Modal body-->
+            <div class="modal-body scroll-y px-10 px-lg-15 pt-0 pb-15">
+                <!--begin:Form-->
+                <form id="kt_modal_new_target_form" method="post" class="form" action="#" enctype="multipart/form-data">
+                    <!--begin::Heading-->
+                    <div class="mb-13 text-center">
+                        <!--begin::Title-->
+                        <h1 class="mb-3">Script Center</h1>
+                        <!--end::Title-->
+                        <!--begin::Description-->
+                        <div class="text-muted fw-bold fs-5">
+                            Please Use this form to attach your script , if it is related to any Catalogue please include them
+                            <br />
+                            If you need more info, please check
+                            <a href="#" class="fw-bolder link-primary">Guidelines and FAQ</a>.
+                        </div>
+                        <!--end::Description-->
+                    </div>
+                    <!--end::Heading-->
+                    <!--begin::Input group-->
+                    <div class="d-flex flex-column mb-8 fv-row">
+                        <!--begin::Label-->
+                        <label class="d-flex align-items-center fs-6 fw-bold mb-2">
+                            <span class="required">Description</span>
+                            <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify a target name for future usage and reference"></i>
+                        </label>
+                        <!--end::Label-->
+                        <input type="text" class="form-control form-control-solid" autocomplete="off" placeholder="Enter File Description" name="description" required />
+                    </div>
+
+
+                    <div class="d-flex flex-column mb-8 fv-row">
+                        <!--begin::Label-->
+                        <label class="d-flex align-items-center fs-6 fw-bold mb-2">
+                            <span class="">Attached to any Study Catalogue?</span>
+                            <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="If your attachment is related to Study Catalogue Please choose from here"></i>
+
+                        </label>
+
+                        <!--end::Label-->
+                        <select asp-for="filesOnDatabase.StudyCatalogueId" class="form-control form-control-solid" asp-items="ViewBag.StudyCatalogueId">
+                            <option label=" "></option>
+                        </select>
+                    </div>
+
+
+
+                    <div class="d-flex flex-column mb-8 fv-row">
+                        <!--begin::Label-->
+                        <label class="d-flex align-items-center fs-6 fw-bold mb-2">
+                            <span class="">Attached to any Model Catalogue?</span>
+                            <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="If your attachment is related to Model Catalogue Please choose from here"></i>
+                        </label>
+                        <!--end::Label-->
+                        <select asp-for="filesOnDatabase.ModelCatalogueId" class="form-control form-control-solid" asp-items="ViewBag.ModelCatalogueId">
+                            <option label=" "></option>
+                        </select>
+                    </div>
+
+
+
+
+
+
+
+
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="d-flex flex-stack mb-8">
+                        <!--begin::Label-->
+                        <div class="me-5">
+                            <label class="fs-6 fw-bold">Use the Botton to Share your Script</label>
+                            <div class="fs-7 fw-bold text-muted">Lets learn from each other!</div>
+                        </div>
+                        <!--end::Label-->
+                        <!--begin::Switch-->
+                        <label class="form-check form-switch form-check-custom form-check-solid">
+                            <input class="form-control form-control-solid" type="file" multiple required name="files" />
+                            @*									<span class="form-check-label fw-bold text-muted">file</span>
+                            *@
+                        </label>
+
+
+
+
+                        <!--end::Switch-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--end::Input group-->
+                    <!--begin::Actions-->
+                    <div class="text-center">
+                        <button type="reset" id="kt_modal_new_target_cancel" class="btn btn-light me-3">Cancel</button>
+
+
+                        <button type="submit" id="kt_modal_new_target_submit" asp-controller="ScriptCenter" asp-action="UploadToDatabase" class="btn btn-primary">
+                            <span class="indicator-label">Submit</span>
+                            <span class="indicator-progress">
+                                Please wait...
+                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                            </span>
+                        </button>
+                    </div>
+                    <!--end::Actions-->
+                </form>
+                <!--end:Form-->
+            </div>
+            <!--end::Modal body-->
+        </div>
+        <!--end::Modal content-->
+    </div>
+    <!--end::Modal dialog-->
+</div>
+<!--end::Modal - New Target-->
+
+
+
+
+<script src="/assets/plugins.bundle.js"></script>
+<script src="/assets/prismjs.bundle.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js" integrity="sha512-yFjZbTYRCJodnuyGlsKamNE/LlEaEAxSUDe5+u61mV8zzqJVFOH7TnULE2/PP/l5vKWpUNnF4VGVkXh3MjgLsg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>

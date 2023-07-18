@@ -1,0 +1,159 @@
+﻿@model FL_Server.Models.Models.ModelCenter
+@*@model FL_Server.Models.Models.Upload.FileUploadViewModel
+*@
+@{
+    ViewData["Title"] = "Details";
+}
+
+
+
+
+<div class="card card-custom d-flex justify-content-between">
+    <div class="card-header">
+        <div class="card-title">
+            <span class="card-icon">
+                <i class="flaticon2-chat-1 text-primary"></i>
+            </span>
+            <h3 class="card-label">
+                Detailed Study Plan
+                <small>Lets Learn From Each Other</small>
+            </h3>
+        </div>
+        <div class="card-toolbar">
+            <a asp-area="DataScientist" asp-action="Index" asp-controller="ModelCenter" class="btn btn-sm btn-light-primary font-weight-bold">
+                <i class="flaticon2-cube"></i> Model Center
+            </a>
+        </div>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+             <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Title)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Title)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.ModelCatalogue)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.ModelCatalogue.Title)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.ModelType)
+            </dt>
+            <dd class="col-sm-10">
+                @*            @Html.DisplayFor(model => model.StudyType)
+                *@
+                @if(Model.ModelType = true)
+                {
+                    <a class="btn btn-light-dark font-weight-bold">Public</a>
+
+                }
+                else
+                {
+                    <a class="btn btn-light-danger font-weight-bold">Private</a>
+
+                }
+
+
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.ApplicationUser)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.ApplicationUser.Email)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.FileModel)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FileModel.Name)
+
+                @if (@Model.FileModel == null)
+                {
+                    <div>No file is included</div>
+                }
+                else
+                {
+                <dt class="col-sm-2">
+                    Script File
+                </dt>
+                <dd class="col-sm-10">
+                        @* <a type="button" class="btn btn-primary" asp-controller="ScriptCenter" asp-action="DownloadFileFromFileSystem" asp-route-id="@Model.Id">Download_sys</a>
+                            <a type="button" class="btn btn-primary" asp-controller="ScriptCenter" asp-action="DownloadFileFromDatabase" asp-route-id="@Model.Id">Download_db</a>*@
+
+
+                    <a type="button" class="btn btn-light-dark" asp-controller="ModelCenter" asp-action="DownloadFileFromDatabase" asp-route-id="@Model.FileModelId">Download</a>
+
+
+
+                </dd>
+                }
+
+            </dd>
+
+             <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.DSS)
+            </dt>
+            <dd class="col-sm-10">
+                
+                 @if (Model.DSS == true)
+                {
+                    <a class="btn btn-light-dark font-weight-bold">Included</a>
+
+                }
+                else
+                {
+                    <a class="btn btn-light-danger font-weight-bold">Not Included</a>
+
+                }
+
+            </dd>
+
+             <dt class="col-sm-2">
+                Analysis Center Reference
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.StudyCenter.Title)
+            </dd>
+
+
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.LastUpdate)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.LastUpdate)
+            </dd>
+        </dl>
+
+
+
+
+
+
+    </div>
+    <div class="card-footer d-flex justify-content-between">
+        <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-light-primary font-weight-bold">Edit</a>
+
+        @if (@Model.DSS == true)
+                {
+        <a asp-action="DSS" asp-route-id="@Model?.Id" target="_blank" class="btn btn-primary  btn-lg btn-block font-weight-bold">Move to DSS?</a>
+        }
+       
+        <a asp-action="Index" class="btn btn-secondary font-weight-bold">Back to List</a>
+    </div>
+</div>
+
+
+
+
+
+
+<script src="/assets/plugins.bundle.js"></script>
+<script src="/assets/prismjs.bundle.js"></script>
+
+
+
+
+

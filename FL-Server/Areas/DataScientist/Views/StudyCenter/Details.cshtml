@@ -1,0 +1,273 @@
+﻿@model FL_Server.Models.HomeViewModel
+@*@model FL_Server.Models.Models.Upload.FileUploadViewModel
+*@
+@{
+    ViewData["Title"] = "Details";
+}
+
+
+
+
+<div class="card card-custom d-flex justify-content-between">
+    <div class="card-header">
+        <div class="card-title">
+            <span class="card-icon">
+                <i class="flaticon2-chat-1 text-primary"></i>
+            </span>
+            <h3 class="card-label">
+                Detailed Analysis Plan
+                <small>Lets Learn From Each Other</small>
+            </h3>
+        </div>
+        <div class="card-toolbar">
+            <a asp-area="DataScientist" asp-action="Index" asp-controller="ModelCenter" class="btn btn-sm btn-light-primary font-weight-bold">
+                <i class="flaticon2-cube"></i> Model Center?
+            </a>
+        </div>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.StudyCenter.Title)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.StudyCenter.Title)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.StudyCenter.StudyCatalogue)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.StudyCenter.StudyCatalogue.Title)
+            </dd>
+            <dt class="col-sm-2">
+                Analysis Type
+            </dt>
+            <dd class="col-sm-10">
+                @*            @Html.DisplayFor(model => model.StudyType)
+                *@
+                @if (Model.StudyCenter.StudyType = true)
+                {
+                    <a class="btn btn-light-dark font-weight-bold">Public</a>
+
+                }
+                else
+                {
+                    <a class="btn btn-light-danger font-weight-bold">Private</a>
+
+                }
+
+
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.StudyCenter.ApplicationUser)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.StudyCenter.ApplicationUser.Email)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.StudyCenter.FileModel)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.StudyCenter.FileModel.Name)
+
+                @if (@Model.StudyCenter.FileModel == null)
+                {
+                    <div>No file is included</div>
+                }
+                else
+                {
+                <dt class="col-sm-2">
+                    Script File
+                </dt>
+                <dd class="col-sm-10">
+                        @* <a type="button" class="btn btn-primary" asp-controller="ScriptCenter" asp-action="DownloadFileFromFileSystem" asp-route-id="@Model.Id">Download_sys</a>
+                            <a type="button" class="btn btn-primary" asp-controller="ScriptCenter" asp-action="DownloadFileFromDatabase" asp-route-id="@Model.Id">Download_db</a>*@
+
+
+                    <a type="button" class="btn btn-secondary" asp-controller="ScriptCenter" asp-action="DownloadFileFromDatabase" asp-route-id="@Model.StudyCenter.FileModelId">Download</a>
+
+
+
+                </dd>
+                }
+
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.StudyCenter.LastUpdate)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.StudyCenter.LastUpdate)
+            </dd>
+        </dl>
+
+
+
+
+
+
+    </div>
+    <div class="card-footer d-flex justify-content-between">
+        <a asp-action="Edit" asp-route-id="@Model?.StudyCenter.Id" class="btn btn-light-primary font-weight-bold">Edit</a>
+
+        @if (@Model.StudyCenter.FileModel != null)
+        {
+            <a @*asp-action="Analysis" asp-route-id="@Model?.Id"*@ @*href="http://20.113.31.254:8585/" target="_blank"*@ data-bs-toggle="modal" data-bs-target="#kt_modal_new_target" class="btn btn-primary  btn-lg btn-block font-weight-bold">Start Analysis</a>
+        }
+
+        <a asp-action="Index" class="btn btn-secondary font-weight-bold">Back to List</a>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="modal fade" id="kt_modal_new_target" tabindex="-1" aria-hidden="true">
+    <!--begin::Modal dialog-->
+    <div class="modal-dialog modal-dialog-centered mw-650px">
+        <!--begin::Modal content-->
+        <div class="modal-content rounded">
+            <!--begin::Modal header-->
+            <div class="modal-header pb-0 border-0 justify-content-end">
+                <!--begin::Close-->
+                <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+                    <!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
+                    <span class="svg-icon svg-icon-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="black" />
+                            <rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="black" />
+                        </svg>
+                    </span>
+                    <!--end::Svg Icon-->
+                </div>
+                <!--end::Close-->
+            </div>
+
+
+            @*
+                <form asp-controller="StudyCenter" asp-action="Launch">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group col-xl-2">
+                <input asp-for="AnalysisCenter.IP" class="form-control form-control-lg" placeholder="Server IP" required>
+                <span asp-validation-for="AnalysisCenter.IP" class="text-danger"></span>
+                </div>
+                </br>
+                <div class="form-group col-xl-6">
+                <input asp-for="AnalysisCenter.Port" class="form-control form-control-lg" placeholder="Port Number" required>
+                <span asp-validation-for="AnalysisCenter.Port" class="text-danger"></span>
+                </div>
+                <br />
+                <input type="submit" value="Run?" type="button" class="btn btn-secondary btn-lg spinner-left mr-3" id="kt_btn_3">
+                </form>
+            *@
+
+
+            <!--begin::Modal header-->
+            <!--begin::Modal body-->
+            <div class="modal-body scroll-y px-10 px-lg-15 pt-0 pb-15">
+                <!--begin:Form-->
+                <form asp-controller="StudyCenter" asp-action="Launch" id="kt_modal_new_target_form" target="_blank">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <!--begin::Heading-->
+                    <div class="mb-13 text-center">
+                        <!--begin::Title-->
+                        <h1 class="mb-3"> Preparing Your Session </h1>
+                        <!--end::Title-->
+                        <!--begin::Description-->
+                        <div class="text-muted fw-bold fs-5">
+                            Please enter the IP address you have recived
+                            <a href="#" class="fw-bolder link-primary">Guidelines and FAQ</a>.
+                        </div>
+                        <!--end::Description-->
+                    </div>
+                    <!--end::Heading-->
+                    <!--begin::Input group-->
+                    <div class="d-flex flex-column mb-8 fv-row">
+                        <!--begin::Label-->
+                        <label class="d-flex align-items-center fs-6 fw-bold mb-2">
+                            <span class="required">Please enter your IP address</span>
+
+                            <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify a IP address, you should normally recived from the Admin"></i>
+                        </label>
+                        <!--end::Label-->
+                        @*                        <input type="text" class="form-control form-control-solid" placeholder="IP : Port" name="description" />
+                        *@
+                        <div class="col-6">
+                            <input asp-for="AnalysisCenter.IP" class="form-control form-control-lg form-control-solid" placeholder="Server IP" required>
+                            <span asp-validation-for="AnalysisCenter.IP" class="text-danger"></span>
+                        </div>
+                        <div class="col-3">
+                            <br />
+                            <input asp-for="AnalysisCenter.Port" class="form-control form-control-lg form-control-solid" placeholder="Port Number" required>
+                            <span asp-validation-for="AnalysisCenter.Port" class="text-danger"></span>
+                        </div>
+                    </div>
+
+
+
+
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="d-flex flex-stack mb-8">
+                        <!--begin::Label-->
+                        <div class="me-5">
+                            <label class="fs-6 fw-bold">Use the Botton to Join The Jupyter Session</label>
+                            <div class="fs-7 fw-bold text-muted">This will connect you to a Jupyter session in a Virtual Machine</div>
+                        </div>
+                        <!--end::Label-->
+                        <!--begin::Switch-->
+                        <!--end::Switch-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--end::Input group-->
+                    <!--begin::Actions-->
+                    <div class="text-center">
+                        <button type="reset" id="kt_modal_new_target_cancel" class="btn btn-light me-3">Cancel</button>
+
+
+                        <button type="submit" id="kt_modal_new_target_submit" id="kt_btn_3" class="btn btn-primary">
+                            <span class="indicator-label">Join Session?</span>
+                            <span class="indicator-progress">
+                                Please wait...
+                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                            </span>
+                        </button>
+                    </div>
+                    <!--end::Actions-->
+                </form>
+                <!--end:Form-->
+            </div>
+            <!--end::Modal body-->
+        </div>
+        <!--end::Modal content-->
+    </div>
+    <!--end::Modal dialog-->
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="/assets/plugins.bundle.js"></script>
+<script src="/assets/prismjs.bundle.js"></script>
+
+
+
+
+

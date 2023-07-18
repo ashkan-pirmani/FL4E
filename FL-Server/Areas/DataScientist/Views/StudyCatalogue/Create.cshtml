@@ -1,0 +1,88 @@
+﻿@model FL_Server.Models.StudyCatalogue
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+
+
+
+<div class="card card-custom">
+ <div class="card-header">
+  <div class="card-title">
+            <span class="card-icon">
+                <i class="flaticon2-chat-1 text-primary"></i>
+            </span>
+   <h3 class="card-label">
+    StudyCatalogue
+    <small>Create</small>
+   </h3>
+  </div>
+       
+ </div>
+ <div class="card-body">
+   <div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StudyLead" class="control-label"></label>
+                <input asp-for="StudyLead" class="form-control" />
+                <span asp-validation-for="StudyLead" class="text-danger"></span>
+            </div>
+         @*   <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <input asp-for="Status" class="form-control" />
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+*@
+
+
+            <div class="form-group">
+                            <label>Status</label>
+                            <div class="radio-inline">
+                                <label class="radio radio-lg">
+                                    <input asp-for="Status" type="radio" value="True" checked="checked" >
+                                    <span></span>Active
+                                </label>
+                                <label class="radio radio-lg">
+                                    <input asp-for="Status" type="radio" value="False" >
+                                    <span></span>Deactive
+                                </label>
+
+                            </div>
+                        </div>
+
+
+         
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+ </div>
+    <div class="card-footer d-flex justify-content-between">
+        <a asp-action="Index" class="btn btn-light-primary font-weight-bold">Back to List</a>
+ </div>
+</div>
+
+
+
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
