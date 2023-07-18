@@ -1,7 +1,7 @@
 
 <h1>Federated Learning For Everyone (FL4E) </h1>
 
-<img src="/FLFEO/FL4E.png" >
+<img src="/FL/FL4E.png" >
 
 Welcome to FL4E - your comprehensive and customizable framework designed to revolutionize clinical research. FL4E addresses challenges like data fragmentation and regulatory barriers, promoting collaboration between data collection initiatives and data analysis experts. Our framework includes a multitude of services and modules, making it user-friendly and versatile for different stakeholders, and making the process of data sharing transparent and straightforward.
 
@@ -22,7 +22,7 @@ For more details about the analyses, please refer to the [FL4E-Analysis GitHub r
 
 
 ## FL4E Highlevel Architecture
-<img src="/FLFEO/FL4E-architecture-2.png" >
+<img src="/FL/FL4E-architecture-2.png" >
 
 
 
@@ -111,7 +111,7 @@ For FL4E client, you can also pull it directly from the docker hub:
 
 ## Database design
 Please note that Data Sharing Layers and DB design notations are yet to be implemented.
-<img src="/FLFEO/DB.png" >
+<img src="/FL/DB.png" >
 
 
 ## Acknowledgments
