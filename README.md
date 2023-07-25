@@ -75,6 +75,8 @@ For further development, we recommend using the .NET Core SDK. You can find more
 For further development its better to use the *.Net Core* SDK for the development process. You can refer to this [link](https://dotnet.microsoft.com/en-us/download) for further information.
  .Net Core is Cross-platform. Open source avaible for all the platforms.
  
+
+A docker image is also available on the docker hub: [link for the image]([https://dotnet.microsoft.com/en-us/download](https://hub.docker.com/r/ashkanpirmani/flclients-arm)).
  
  <h3>Using dotnet SDK</h3>
   
